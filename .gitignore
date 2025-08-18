@@ -1,0 +1,57 @@
+# Git Ignore List
+
+# --- Project Specific ---
+# User-added archived or project-specific files
+.Zicebox/
+
+# --- Python Virtual Environments ---
+# Never track the virtual environment directory
+.venv/
+venv/
+ENV/
+env/
+
+# --- Python Cache & Compiled Files ---
+# Bytecode cache directory and compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# --- Python Packaging Artifacts ---
+# Build artifacts from setuptools/pip install
+*.egg-info/
+
+# --- PyInstaller Files ---
+# Temporary build artifacts
+build/
+# Distribution directory containing the final bundled app
+dist/
+# PyInstaller specification file (usually generated, ignore unless heavily customized)
+*.spec
+
+# --- IDE / Editor Specific Files ---
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+# Editor swap/backup/temp files
+*.sw?        # Vim swap files (covers swp, swo, swn)
+*~           # Emacs, Kate, Gedit backup files
+.*.kate-swp  # Kate hidden swap files
+
+# --- Operating System Files ---
+# macOS specific
+.DS_Store
+# Windows specific
+Thumbs.db
+
+# --- Log Files ---
+# If your application generates any log files
+*.log
+
+# --- Temporary Files ---
+# Generic temp files
+*.tmp
