@@ -55,3 +55,6 @@ Thumbs.db
 # --- Temporary Files ---
 # Generic temp files
 *.tmp
+
+# Added by GitWitItGUI
+GoogleAIStudio Session
