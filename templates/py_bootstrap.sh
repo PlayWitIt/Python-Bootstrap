@@ -579,37 +579,18 @@ else
 fi
 
 readonly REQUIREMENTS_FILE="requirements.txt"
-readonly CORE_DEPENDENCY="PyQt6"
 
 info_message "Validating and sanitizing '$REQUIREMENTS_FILE'..."
 
-if [ ! -f "$REQUIREMENTS_FILE" ]; then
-    info_message "'$REQUIREMENTS_FILE' not found. Creating it with the core dependency '$CORE_DEPENDENCY'."
-    echo "$CORE_DEPENDENCY" > "$REQUIREMENTS_FILE"
-else
-    # Sanitize the file: remove any lines that don't look like a package, a comment, or a blank line.
+if [ -f "$REQUIREMENTS_FILE" ]; then
     temp_req_file=$(mktemp)
-    # This grep command keeps comments, blank lines, and valid package lines. It filters out garbage.
     grep -E '(^#.*$)|(^\s*$)|(^[a-zA-Z0-9_.-]+)' "$REQUIREMENTS_FILE" > "$temp_req_file"
 
-    # Check if the core dependency exists in the *sanitized* file
-    core_dep_found=false
-    if grep -q -E "^${CORE_DEPENDENCY}(>|=|<|\[|#|\s*$)" "$temp_req_file"; then
-        core_dep_found=true
-    fi
-
-    # If not found, add it
-    if ! $core_dep_found; then
-        info_message "Core dependency '$CORE_DEPENDENCY' not found in '$REQUIREMENTS_FILE'. Appending it."
-        printf "\n%s\n" "$CORE_DEPENDENCY" >> "$temp_req_file"
-    fi
-
-    # Replace the original file only if it was modified (sanitized or appended to)
     if ! diff -q "$REQUIREMENTS_FILE" "$temp_req_file" &>/dev/null; then
         info_message "Original '$REQUIREMENTS_FILE' was invalid or incomplete. It has been sanitized and updated."
         mv "$temp_req_file" "$REQUIREMENTS_FILE"
     else
-        rm "$temp_req_file" # No changes needed, clean up temp
+        rm "$temp_req_file"
     fi
 fi
 

@@ -1,11 +1,3 @@
-
-This new line uses a shell feature called "parameter expansion" to remove the `/` prefix from the input string, but only if it exists.
-
-### Fully Corrected Script
-
-Here is the complete script with the fix incorporated. You can replace your existing script with this one.
-
-```bash
 #!/usr/bin/env bash
 
 # ==============================================================================
@@ -36,7 +28,7 @@ VENV_DIR_PRIMARY=".venv"
 VENV_DIR_SECONDARY="venv"
 
 # Python script names in order of preference
-SCRIPT_PRIMARY="main.py"
+SCRIPT_PRIMARY="test.py"
 SCRIPT_SECONDARY="app.py"
 SCRIPT_TERTIARY="myapp.py"
 # --- End Configuration ---
@@ -202,13 +194,7 @@ else
     info "None of '$SCRIPT_PRIMARY', '$SCRIPT_SECONDARY', or '$SCRIPT_TERTIARY' were found."
     while true; do
         # Direct prompt to stderr to avoid polluting stdout, which might be piped.
-        read -r -p "Please enter the path to the Python script to run (or press Enter to abort): " USER_INPUT_SCRIPT_NAME >&2
-
-        # --- FIX ---
-        # Strip a leading slash, if present, to treat the path as relative.
-        # This prevents the user from accidentally providing an absolute path.
-        USER_INPUT_SCRIPT_NAME="${USER_INPUT_SCRIPT_NAME#/}"
-        # --- END FIX ---
+        read -r -p "Please enter the name of the Python script to run (or press Enter to abort): " USER_INPUT_SCRIPT_NAME >&2
 
         if [ -z "$USER_INPUT_SCRIPT_NAME" ]; then
             error_exit "No script specified. Aborting."

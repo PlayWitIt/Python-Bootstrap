@@ -32,7 +32,7 @@
 ### 🧹 Cleanup / Refactor
 - [ ] **Consolidate Relaunch Logic**: The terminal auto-relaunch logic is duplicated across `py_bootstrap.sh` and `Run.sh`. This could be refactored into a single, source-able helper function if it becomes more complex.
 - [ ] **Break Out `main.py` Logic**: Refactor the main `init` function in `main.py` by moving file I/O and permission-setting logic into smaller, dedicated helper functions to improve readability.
-- [ ] **Improve `py_bootstrap.sh` Dependency Logic**: The current script blindly adds `PyQt6` if `requirements.txt` is missing. This could be improved to be more generic or prompt the user for a "core" dependency.
+- [x] **Improve `py_bootstrap.sh` Dependency Logic**: Removed auto-adding of PyQt6. Now only sanitizes existing requirements.txt if present.
 - [ ] **Add More Build Script Comments**: Enhance `build_and_install.sh` with more detailed comments explaining the purpose of each PyInstaller flag and build step.
 - [ ] **Standardize Shell Script Functions**: Ensure helper functions across all `.sh` files follow a consistent naming convention and output format.
 
