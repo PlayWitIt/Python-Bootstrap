@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck shell=bash
 
 # HOW TO MAKE IT EXECUTABLE:
 # --------------------------
@@ -24,63 +25,47 @@
 # - Command existence checks.
 # - Detailed messages and user interaction.
 # - Attempts to detect and work around common Conda issues.
-# - Self-heals a corrupted or incomplete requirements.txt file.
+# - Self-heals a corrupted or incomplete requirements.txt file if it exists.
 
 # Use a specific environment variable to avoid infinite loops when re-launching in terminal.
-if [ "$_IN_TERMINAL_ALREADY" != "true" ]; then
-    if ! [ -t 0 ]; then # Check if standard input is a terminal
+# shellcheck disable=SC2034
+if [ "${_IN_TERMINAL_ALREADY:-false}" != "true" ]; then
+    if ! [ -t 0 ]; then
         echo "Script not launched in a terminal. Attempting to re-launch in a new terminal..."
         SCRIPT_PATH_FOR_RELAUNCH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/$(basename "${BASH_SOURCE[0]}")"
         TERMINAL_LAUNCH_CMD=()
 
-        # IMPORTANT: This path is based on your previous `which conda` output.
-        KNOWN_CONDA_BASE="/opt/miniconda3"
-
         CONDA_INIT_SNIPPET=""
-        # Try to construct a command to initialize conda's shell integration for the new terminal
-        if [ -f "$KNOWN_CONDA_BASE/etc/profile.d/conda.sh" ]; then
-            CONDA_INIT_SNIPPET="echo 'DEBUG_INNER_COMMAND_STRING: Sourcing $KNOWN_CONDA_BASE/etc/profile.d/conda.sh'; source '$KNOWN_CONDA_BASE/etc/profile.d/conda.sh';"
-        elif [ -x "$KNOWN_CONDA_BASE/bin/conda" ]; then
-            CONDA_INIT_SNIPPET="echo 'DEBUG_INNER_COMMAND_STRING: Prepending Conda to PATH'; export PATH=\"$KNOWN_CONDA_BASE/bin:$KNOWN_CONDA_BASE/condabin:\$PATH\";"
-        else
-            CONDA_INIT_SNIPPET="echo 'DEBUG_INNER_COMMAND_STRING: KNOWN_CONDA_BASE ($KNOWN_CONDA_BASE) conda.sh or bin/conda not found/executable. No specific Conda PATH init attempted here.';"
+        if command -v conda &> /dev/null; then
+            CONDA_PATH=$(command -v conda)
+            CONDA_ROOT=$(dirname $(dirname "$CONDA_PATH"))
+            if [ -f "$CONDA_ROOT/etc/profile.d/conda.sh" ]; then
+                CONDA_INIT_SNIPPET="source '$CONDA_ROOT/etc/profile.d/conda.sh';"
+            fi
         fi
 
-        DEBUG_PATH_BEFORE_BASHRC="echo 'DEBUG_INNER_COMMAND_STRING: PATH before .bashrc source:'; echo \"\$PATH\" | tr ':' '\n' | sed 's/^/    DEBUG_INNER_COMMAND_STRING: /';"
-        ATTEMPT_BASHRC_SOURCE="if [ -f ~/.bashrc ]; then echo 'DEBUG_INNER_COMMAND_STRING: Sourcing ~/.bashrc'; source ~/.bashrc; else echo 'DEBUG_INNER_COMMAND_STRING: ~/.bashrc not found.'; fi;"
-        DEBUG_PATH_AFTER_BASHRC="echo 'DEBUG_INNER_COMMAND_STRING: PATH after .bashrc source, before Conda snippet:'; echo \"\$PATH\" | tr ':' '\n' | sed 's/^/    DEBUG_INNER_COMMAND_STRING: /';"
-        DEBUG_PATH_AFTER_CONDA_SNIPPET="echo 'DEBUG_INNER_COMMAND_STRING: PATH after Conda snippet, before executing script:'; echo \"\$PATH\" | tr ':' '\n' | sed 's/^/    DEBUG_INNER_COMMAND_STRING: /';"
-
-        # Construct INNER_COMMAND_STRING with detailed PATH debugging
-        # Order: Initial PATH -> Source .bashrc -> PATH -> Conda Init Snippet -> PATH -> Actual Script
-        INNER_COMMAND_STRING="$DEBUG_PATH_BEFORE_BASHRC $ATTEMPT_BASHRC_SOURCE $DEBUG_PATH_AFTER_BASHRC $CONDA_INIT_SNIPPET export _IN_TERMINAL_ALREADY=true; $DEBUG_PATH_AFTER_CONDA_SNIPPET \"\$0\" \"\$@\"; RES=\$?; echo; echo \"--- Script execution finished (Exit Code: \$RES) ---\"; read -rsp $'Press any key to close this terminal window...\n' -n1 key; exit \$RES"
+        INNER_COMMAND_STRING="$CONDA_INIT_SNIPPET export _IN_TERMINAL_ALREADY=true; \"\$0\" \"\$@\"; RES=\$?; echo; echo \"--- Script execution finished (Exit Code: \$RES) ---\"; read -rsp $'Press any key to close this terminal window...\n' -n1 key; exit \$RES"
 
         if command -v gnome-terminal &> /dev/null; then
-            # Using bash -l -c "..." to make bash act as a login shell, which should source profile files
-            TERMINAL_LAUNCH_CMD=(gnome-terminal -- bash -l -c "$INNER_COMMAND_STRING")
+            TERMINAL_LAUNCH_CMD=(gnome-terminal -- bash -c "$INNER_COMMAND_STRING")
         elif command -v konsole &> /dev/null; then
-            TERMINAL_LAUNCH_CMD=(konsole -e bash -l -c "$INNER_COMMAND_STRING")
+            TERMINAL_LAUNCH_CMD=(konsole -e bash -c "$INNER_COMMAND_STRING")
         elif command -v xfce4-terminal &> /dev/null; then
-             ESCAPED_INNER_COMMAND_STRING=$(printf "%q" "$INNER_COMMAND_STRING")
-             TERMINAL_LAUNCH_CMD=(xfce4-terminal --command="bash -l -c $ESCAPED_INNER_COMMAND_STRING")
+            TERMINAL_LAUNCH_CMD=(xfce4-terminal --hold --command="bash -c '$INNER_COMMAND_STRING'")
         elif command -v xterm &> /dev/null; then
-            TERMINAL_LAUNCH_CMD=(xterm -e bash -l -c "$INNER_COMMAND_STRING")
+            TERMINAL_LAUNCH_CMD=(xterm -hold -e bash -c "$INNER_COMMAND_STRING")
         fi
 
         if [ ${#TERMINAL_LAUNCH_CMD[@]} -gt 0 ]; then
-            echo "Using: ${TERMINAL_LAUNCH_CMD[0]} to re-launch (attempting login shell for bash)..."
-            # When bash -l -c "cmd_string" arg0 arg1 ...,
-            # inside cmd_string: $0 is arg0, $1 is arg1.
-            # We want $0 inside INNER_COMMAND_STRING to be the script path.
-            "${TERMINAL_LAUNCH_CMD[@]}" bash "$SCRIPT_PATH_FOR_RELAUNCH" "$@"
+            echo "Using: ${TERMINAL_LAUNCH_CMD[0]} to re-launch..."
+            "${TERMINAL_LAUNCH_CMD[@]}" "$SCRIPT_PATH_FOR_RELAUNCH" "$@"
             exit_status=$?
             if [ $exit_status -ne 0 ]; then
-                echo "Failed to launch in new terminal (terminal emulator exit code: $exit_status)."
+                echo "Failed to launch in new terminal (exit code: $exit_status)." >&2
             fi
-            exit $exit_status
+            exit "$exit_status"
         else
             echo "ERROR: No suitable terminal emulator found. Please run from an existing terminal." >&2
-            if command -v zenity &> /dev/null; then zenity --error --text="No suitable terminal emulator found.\nPlease run from an existing terminal." --title="Script Error"; fi
             exit 1
         fi
     fi

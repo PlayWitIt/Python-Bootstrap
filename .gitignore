@@ -51,6 +51,7 @@ Thumbs.db
 # --- Log Files ---
 # If your application generates any log files
 *.log
+build_install_*.log
 
 # --- Temporary Files ---
 # Generic temp files
@@ -58,3 +59,7 @@ Thumbs.db
 
 # Added by GitWitItGUI
 GoogleAIStudio Session
+
+# --- Local Development/Sandbox ---
+New Folder/
+TODO.md

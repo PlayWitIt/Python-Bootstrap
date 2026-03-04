@@ -5,18 +5,18 @@ import stat
 from pathlib import Path
 import click
 
+from version import __version__, __author__, __description__
+
+
 def get_template_dir() -> Path:
     """
     Finds the bundled template directory, whether running from source
     or from a PyInstaller executable.
     """
     if getattr(sys, 'frozen', False):
-        # We are running in a bundle (packaged by PyInstaller).
-        # The templates are in a folder named 'templates' next to the executable.
         base_path = Path(sys._MEIPASS)
         template_dir = base_path / 'templates'
     else:
-        # We are running in a normal Python environment.
         base_path = Path(__file__).resolve().parent
         template_dir = base_path / 'templates'
     
@@ -25,15 +25,20 @@ def get_template_dir() -> Path:
         
     return template_dir
 
+
 @click.group()
+@click.version_option(version=__version__, prog_name="pybs")
 def cli():
     """pybootstrap: A tool to initialize a Python project with helper scripts."""
     pass
 
+
 @cli.command()
 @click.option('--dir', 'directory', default=None, type=click.Path(),
               help="Create and initialize in a new directory. Defaults to the current directory.")
-def init(directory):
+@click.option('--no-git', is_flag=True, help="Skip Git repository initialization prompt.")
+@click.option('--no-run', is_flag=True, help="Only generate py_bootstrap.sh, skip Run.sh.")
+def init(directory, no_git, no_run):
     """Initializes a project with py_bootstrap.sh and Run.sh."""
     
     target_path = Path.cwd()
@@ -49,7 +54,11 @@ def init(directory):
 
     try:
         template_dir = get_template_dir()
-        files_to_copy = ["py_bootstrap.sh", "Run.sh"]
+        files_to_copy = []
+        
+        if not no_run:
+            files_to_copy.append("Run.sh")
+        files_to_copy.append("py_bootstrap.sh")
         
         click.echo("Creating helper scripts...")
         
@@ -68,19 +77,20 @@ def init(directory):
             
             shutil.copy(source_file, dest_file)
             
-            # Make the script executable for the user, group, and others
             current_mode = os.stat(dest_file).st_mode
             os.chmod(dest_file, current_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
             
             click.secho(f"  - Created and made executable: {dest_file.name}", fg='green')
 
-        click.echo("\n✅ Initialization complete!")
+        click.echo("\n" + "="*50)
+        click.secho("Initialization complete!", fg='green', bold=True)
+        click.echo("="*50)
         click.echo("\nNext steps:")
         if directory:
-             click.echo(f"1. Navigate into your project: cd {directory}")
-        click.echo("2. Set up your Python environment by running: ./py_bootstrap.sh")
-        click.echo("3. Create your main python file (e.g., main.py, app.py).")
-        click.echo("4. Run your application using: ./Run.sh")
+             click.echo(f"1. cd {directory}")
+        click.echo("2. Create your requirements.txt with your dependencies")
+        click.echo("3. Run: ./py_bootstrap.sh")
+        click.echo("4. Run: ./Run.sh")
 
     except Exception as e:
         click.secho(f"\nAn error occurred: {e}", fg='red')

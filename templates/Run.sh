@@ -1,12 +1,5 @@
-
-This new line uses a shell feature called "parameter expansion" to remove the `/` prefix from the input string, but only if it exists.
-
-### Fully Corrected Script
-
-Here is the complete script with the fix incorporated. You can replace your existing script with this one.
-
-```bash
 #!/usr/bin/env bash
+# shellcheck shell=bash
 
 # ==============================================================================
 # Script to robustly activate a Python virtual environment (if found)
@@ -52,7 +45,7 @@ set -euo pipefail
 
 # --- Self-launch in terminal if not already in one (and feature is enabled) ---
 if [ "$LAUNCH_IN_TERMINAL" = "true" ]; then
-    # Use a specific environment variable to avoid infinite loops.
+    # shellcheck disable=SC2034
     if [ "${_IN_TERMINAL_ALREADY:-false}" != "true" ]; then
         # Check if standard input is a terminal
         if ! [ -t 0 ]; then
@@ -169,7 +162,7 @@ if [ -n "$VENV_DIR_TO_USE" ]; then # -n checks if the string is not empty (i.e.,
 
     info "Activating virtual environment '$VENV_DIR_TO_USE'..."
     # shellcheck source=/dev/null
-    source "$ACTIVATE_SCRIPT" # `set -e` will cause exit if source fails
+    source "$ACTIVATE_SCRIPT"
 
     PYTHON_EXECUTABLE="$EXPECTED_VENV_PYTHON"
     info "Will use Python interpreter from virtual environment: $PYTHON_EXECUTABLE"

@@ -150,7 +150,7 @@ This script is your **one-time setup tool**. You run it once at the beginning of
 -   **Purpose**: To create a clean, consistent, and correct Python virtual environment.
 -   **Features**:
     -   **Environment Detection**: It intelligently checks for `pyenv`, then `conda`, then falls back to your system `python3` to create the environment. This ensures the most appropriate Python version is used.
-    -   **Dependency Management**: It finds your `requirements.txt` file and installs all listed packages. If the file doesn't exist, it creates a basic one.
+    -   **Dependency Management**: It finds your `requirements.txt` file and installs all listed packages. If the file doesn't exist, the sanitization step is skipped.
     -   **Git Initialization**: It will ask if you want to initialize a Git repository and create a standard, robust `.gitignore` file for Python projects.
 
 ### `Run.sh`

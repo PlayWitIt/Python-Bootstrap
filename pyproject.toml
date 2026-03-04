@@ -1,0 +1,73 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "pyinstaller"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pybootstrap"
+version = "1.0.0"
+description = "A CLI tool to initialize Python projects with robust helper scripts"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "PlayWitIt"}
+]
+keywords = ["python", "bootstrap", "project-template", "venv", "cli"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS :: MacOS X",
+    "Programming Language :: Bash",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Build Tools",
+    "Topic :: System :: Systems Administration",
+]
+requires-python = ">=3.8"
+dependencies = [
+    "click>=8.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "black>=23.0",
+    "ruff>=0.1.0",
+]
+
+[project.scripts]
+pybs = "main:cli"
+
+[project.urls]
+Homepage = "https://github.com/PlayWitIt/Python-Bootstrap"
+Repository = "https://github.com/PlayWitIt/Python-Bootstrap"
+Issues = "https://github.com/PlayWitIt/Python-Bootstrap/issues"
+
+[tool.setuptools]
+packages = ["version"]
+
+[tool.setuptools.package-data]
+version = "version.py"
+
+[tool.black]
+line-length = 100
+target-version = ["py38", "py39", "py310", "py311", "py312"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py38"
+select = ["E", "F", "W", "I", "N", "UP", "B", "A", "C4", "PT"]
+ignore = []
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
