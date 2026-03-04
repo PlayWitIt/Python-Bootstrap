@@ -9,7 +9,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - `--version` flag to CLI
-- `--no-git` flag to skip Git initialization prompt
 - `--no-run` flag to skip Run.sh generation
 - `pyproject.toml` for proper Python packaging
 - ShellCheck directives for bash best practices

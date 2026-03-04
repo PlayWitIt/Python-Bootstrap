@@ -36,9 +36,8 @@ def cli():
 @cli.command()
 @click.option('--dir', 'directory', default=None, type=click.Path(),
               help="Create and initialize in a new directory. Defaults to the current directory.")
-@click.option('--no-git', is_flag=True, help="Skip Git repository initialization prompt.")
 @click.option('--no-run', is_flag=True, help="Only generate py_bootstrap.sh, skip Run.sh.")
-def init(directory, no_git, no_run):
+def init(directory, no_run):
     """Initializes a project with py_bootstrap.sh and Run.sh."""
     
     target_path = Path.cwd()
