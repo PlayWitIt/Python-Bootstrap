@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `pyproject.toml` for proper Python packaging
 - ShellCheck directives for bash best practices
 - Centralized version management in `version.py`
+- Fixed package data include for templates
 
 ### Changed
 - Removed auto-addition of PyQt6 dependency

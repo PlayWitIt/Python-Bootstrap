@@ -50,6 +50,8 @@ Repository = "https://github.com/PlayWitIt/Python-Bootstrap"
 Issues = "https://github.com/PlayWitIt/Python-Bootstrap/issues"
 
 [tool.setuptools]
+py-modules = ["main", "version"]
+package-data = {templates = ["*"]}
 
 [tool.black]
 line-length = 100

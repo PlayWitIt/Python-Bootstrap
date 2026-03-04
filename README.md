@@ -28,8 +28,8 @@ pybootstrap automates all of it - one command, and you're ready to code.
 ## Who is this for?
 
 - **Everyone**: Whether you barely know Python or you've been coding for years, setup is repetitive and time-consuming.
-- **Non-technical users**: Don't want to touch the terminal? Just run the scripts.
 - **Professionals**: You know venv - you just don't want to repeat the same commands every time.
+- **Non-technical users**: Don't want to touch the terminal? Just run the scripts.
 
 ## Core Features
 
@@ -81,15 +81,15 @@ Hello!
 
 ## Installation
 
-### From PyPI (Recommended)
+### Easiest Way (No Terminal Needed)
 
-```bash
-pip install pybootstrap
-```
+1. Download `py_bootstrap.sh` and `Run.sh` from this repository
+2. Double-click `py_bootstrap.sh` - it opens a terminal and sets up your project
+3. Double-click `Run.sh` to run your code
 
-That's it. Now use `pybs` anywhere.
+That's it. No installation, no commands to remember.
 
-### From Source
+### From Terminal
 
 ```bash
 git clone https://github.com/PlayWitIt/Python-Bootstrap.git
@@ -97,13 +97,13 @@ cd Python-Bootstrap
 pip install .
 ```
 
-### From PyInstaller Build
+Now use `pybs` anywhere.
+
+### From PyPI (Coming Soon)
 
 ```bash
-./build_and_install.sh
+pip install pybootstrap
 ```
-
-This creates a standalone executable installed to `/usr/local/bin/pybs`.
 
 ## Usage
 
