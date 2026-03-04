@@ -3,188 +3,178 @@
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/PlayWitIt/Python-Bootstrap)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A command-line tool to quickly initialize a new Python project with robust, intelligent environment setup and execution scripts.
+**Just want to start coding? Skip the setup.**
+
+pybootstrap gets you from "I want to write Python" to "running code" in seconds. No tedious setup, no remembering venv commands - just code.
 
 ---
 
 ## The "Why"
 
-Starting a new Python project often involves the same repetitive boilerplate:
-1.  Create a project directory.
-2.  Set up a virtual environment (`.venv` or `conda`).
-3.  Activate the environment.
-4.  Install dependencies.
-5.  Create a `.gitignore` file.
-6.  Initialize a Git repository.
-7.  Remember to activate the environment every time you want to run your script.
+You know how to use venv. But every single time you start a new project:
+1. Create a project directory
+2. `python -m venv .venv`
+3. `source .venv/bin/activate`
+4. Install dependencies
+5. Create requirements.txt
+6. Create .gitignore
+7. Initialize Git
+8. Next time: remember to activate the environment
 
-`pybootstrap` automates this entire process with a single command, dropping two powerful, pre-configured shell scripts into your project that handle everything for you.
+**That's 7 steps before you write a single line of code.**
+
+pybootstrap automates all of it - one command, and you're ready to code.
+
+## Who is this for?
+
+- **Everyone**: Whether you barely know Python or you've been coding for years, setup is repetitive and time-consuming.
+- **Non-technical users**: Don't want to touch the terminal? Just run the scripts.
+- **Professionals**: You know venv - you just don't want to repeat the same commands every time.
 
 ## Core Features
 
--   **One-Command Init**: Run `pybs init` to instantly bootstrap your project.
--   **Intelligent Environment Setup** (`py_bootstrap.sh`):
-    -   Automatically detects and uses `pyenv`, `conda`, or system Python.
-    -   Cleans up old virtual environments.
-    -   Creates a fresh `.venv` or prompts for a Conda environment.
-    -   Installs dependencies from `requirements.txt`.
-    -   Optionally initializes a Git repository and creates a comprehensive `.gitignore`.
--   **Smart & Simple Execution** (`Run.sh`):
-    -   A single, universal command (`./Run.sh`) to run your project.
-    -   Automatically activates the correct virtual environment (`.venv` or `conda`).
-    -   Automatically finds your main script (`main.py`, `app.py`, etc.).
-    -   **Self-correcting**: If it can't find the main script, it will ask you for the correct name and offer to permanently update itself for future runs.
--   **Cross-Platform**: The generated scripts are designed for Linux and macOS environments.
+- **One-Command Setup**: Run `pybs init`, done.
+- **Intelligent Environment** (`py_bootstrap.sh`):
+    - Auto-detects pyenv, conda, or system Python
+    - Creates and activates virtual environment
+    - Installs dependencies from requirements.txt
+    - Optional Git initialization with .gitignore
+- **Zero-Config Running** (`Run.sh`):
+    - Just run `./Run.sh` - always works
+    - Auto-activates your venv
+    - Finds your script (main.py, app.py, etc.)
+    - Remembers your choice for next time
 
 ## Quick Demo
 
-Here's what a typical workflow looks like:
-
 ```text
-$ pybs init --dir my_awesome_project
-Working inside new directory: /home/user/code/my_awesome_project
+$ pybs init --dir my_project
+Working inside new directory: /home/user/my_project
 Creating helper scripts...
   - Created and made executable: py_bootstrap.sh
   - Created and made executable: Run.sh
 
-✅ Initialization complete!
+Initialization complete!
 
 Next steps:
-1. Navigate into your project: cd my_awesome_project
-2. Set up your Python environment by running: ./py_bootstrap.sh
-3. Create your main python file (e.g., main.py, app.py).
-4. Run your application using: ./Run.sh
+1. cd my_project
+2. Create your requirements.txt with your dependencies
+3. Run: ./py_bootstrap.sh
+4. Run: ./Run.sh
 
-$ cd my_awesome_project
+$ cd my_project
 
 $ ./py_bootstrap.sh
 ℹ️  Starting project setup...
-ℹ️  Step 1: Cleaning up old local virtual environment ('.venv')...
-...
-ℹ️  Step 2: Determining Python environment type and creating it...
-...
-ℹ️  Using system Python to create a standard venv.
-...
-ℹ️  Step 3: Activating environment for script session and installing dependencies...
-...
-ℹ️  Step 4: Optional Git Repository Initialization and .gitignore creation...
-Do you want to initialize a Git repository in this directory? [y/N]: y
-...
-✅ Project setup complete!
-   Environment setup method: venv
-   ...
-   To activate the environment in your current terminal session for development, run:
-   source ".venv/bin/activate"
+ℹ️  Creating virtual environment...
+ℹ️  Installing dependencies...
+✅ Project ready! Just run ./Run.sh
 
-$ # Create your app file
-$ echo 'print("Hello, pybootstrap!")' > app.py
+$ echo 'print("Hello!")' > main.py
 
 $ ./Run.sh
-[INFO] Looking for virtual environment...
 [INFO] Found '.venv' directory.
-[INFO] Activating virtual environment '.venv'...
-[INFO] Will use Python interpreter from virtual environment: .../.venv/bin/python3
-[INFO] Looking for Python script to run...
-[INFO] Found 'app.py' to run.
-[INFO] Running app.py using .../.venv/bin/python3...
-Hello, pybootstrap!
-[INFO] Script execution finished successfully.
+[INFO] Activating virtual environment...
+[INFO] Running main.py...
+Hello!
 ```
 
-## Installation (Building `pybs` from Source)
+## Installation
 
-The `pybs` command is built using this repository's source code.
+### From PyPI (Recommended)
 
-#### Prerequisites
--   Python 3.6+ and `pip`
--   `git` (for cloning)
-
-#### Build and Install Steps
-
-1.  **Clone the repository:**
-    ```bash
-    git clone https://github.com/PlayWitIt/Python-Bootstrap.git
-    cd Python-Bootstrap
-    ```
-
-2.  **Run the build script:**
-    This script handles everything: it creates a virtual environment, installs dependencies (`pyinstaller` and `click`), and runs PyInstaller to build the single-file executable.
-    ```bash
-    ./build_and_install.sh
-    ```
-    The script will use `sudo` at the end to create a symbolic link from the built executable to `/usr/local/bin/pybs`, making the command available system-wide.
-
-3.  **Verify the installation:**
-    Open a **new terminal** and run:
-    ```bash
-    pybs --help
-    ```
-    You should see the help message for the `pybs` command.
-
-## How to Use `pybs`
-
-Once installed, you can use the `pybs` command to initialize new projects.
-
-#### Initialize in a new directory:
-
-This is the recommended approach. It creates a new folder and places the helper scripts inside.
 ```bash
-pybs init --dir my-new-project
+pip install pybootstrap
 ```
 
-#### Initialize in the current directory:
+That's it. Now use `pybs` anywhere.
 
-Useful if you have already created and navigated into your project folder.
+### From Source
+
 ```bash
-mkdir my-project
-cd my-project
+git clone https://github.com/PlayWitIt/Python-Bootstrap.git
+cd Python-Bootstrap
+pip install .
+```
+
+### From PyInstaller Build
+
+```bash
+./build_and_install.sh
+```
+
+This creates a standalone executable installed to `/usr/local/bin/pybs`.
+
+## Usage
+
+### Initialize a new project
+
+```bash
+# In a new directory
+pybs init --dir my_project
+
+# Or in current directory
 pybs init
 ```
 
-## The Generated Scripts Explained
+### Set up the environment
 
-### `py_bootstrap.sh`
+```bash
+# Just run this once per project
+./py_bootstrap.sh
 
-This script is your **one-time setup tool**. You run it once at the beginning of a project.
+# It will:
+# - Create a virtual environment
+# - Install dependencies from requirements.txt
+# - Ask about Git (optional)
+```
 
--   **Purpose**: To create a clean, consistent, and correct Python virtual environment.
--   **Features**:
-    -   **Environment Detection**: It intelligently checks for `pyenv`, then `conda`, then falls back to your system `python3` to create the environment. This ensures the most appropriate Python version is used.
-    -   **Dependency Management**: It finds your `requirements.txt` file and installs all listed packages. If the file doesn't exist, the sanitization step is skipped.
-    -   **Git Initialization**: It will ask if you want to initialize a Git repository and create a standard, robust `.gitignore` file for Python projects.
+### Run your code
 
-### `Run.sh`
+```bash
+./Run.sh
 
-This is your **day-to-day run command**. You use it every time you want to execute your application.
+# That's it. No need to:
+# - Remember to activate venv
+# - Know which python to use
+# - Remember file names
+```
 
--   **Purpose**: To run your main Python script without you having to manually activate the virtual environment every time.
--   **Features**:
-    -   **Automatic Activation**: It detects your `.venv` (or other venv/conda environment) and activates it in a sub-shell before running your code, ensuring all your dependencies are available.
-    -   **Script Discovery**: It automatically looks for `main.py`, `app.py`, or `myapp.py` to execute.
-    -   **Self-Correction**: If it can't find one of the default scripts, it will prompt you to enter the correct filename. It then gives you the option to **permanently save this new filename** as the default by modifying the `Run.sh` script itself.
+## How It Works
 
-## Customization
+### `py_bootstrap.sh` (One-time setup)
+Creates your project environment:
+- Detects best Python version (pyenv → conda → system)
+- Creates `.venv` directory
+- Installs your dependencies
+- Optionally initializes Git
 
-You can easily customize the scripts that `pybs` generates.
+### `Run.sh` (Every time you run)
+Executes your code:
+- Finds your virtual environment
+- Activates it automatically
+- Locates your main script
+- Runs it
 
-1.  Navigate to your cloned `pybootstrap` source directory.
-2.  Edit the shell scripts inside the `templates/` folder (`py_bootstrap.sh` and `Run.sh`).
-3.  Re-run the build script to package your changes into the `pybs` command:
-    ```bash
-    ./build_and_install.sh
-    ```
-    The next time you run `pybs init`, it will generate your newly customized scripts.
+No activation commands. No path hunting. Just code.
 
-## Uninstallation
+## Options
 
-To remove the `pybs` command from your system and clean up build artifacts:
-1.  Navigate to your cloned `pybootstrap` source directory.
-2.  Run the uninstall script:
-    ```bash
-    ./uninstall.sh
-    ```
-    This will remove the symbolic link from `/usr/local/bin` and ask if you want to delete the `dist/`, `build/`, and `.spec` files.
+### pybs init
+
+```bash
+pybs init                    # Current directory
+pybs init --dir my_project   # New directory
+pybs init --no-run          # Skip Run.sh generation
+pybs --version             # Show version
+```
+
+## Requirements
+
+- Python 3.8+
+- Linux or macOS (Windows: WSL works fine)
+- That's it
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+MIT License - see [LICENSE](LICENSE) file.
