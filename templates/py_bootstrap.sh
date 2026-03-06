@@ -579,7 +579,7 @@ if [ -f "$REQUIREMENTS_FILE" ]; then
     fi
 fi
 
-# Now, with a guaranteed-to-be-valid requirements file, proceed with installation.
+# Install from requirements.txt if it has content
 if [ -s "$REQUIREMENTS_FILE" ]; then
   pip_req_install_log_file="pip_requirements_install.log"
   info_message "Installing dependencies from '$REQUIREMENTS_FILE' (details/errors will be logged to '$pip_req_install_log_file')..."
@@ -592,7 +592,30 @@ Common reasons: typos in '$REQUIREMENTS_FILE', network issues, package not found
     info_message "Dependencies installed successfully from '$REQUIREMENTS_FILE'."
   fi
 else
-  info_message "'$REQUIREMENTS_FILE' is empty. No dependencies to install."
+  info_message "'$REQUIREMENTS_FILE' is empty or not found."
+  read -r -p "Do you want to auto-detect dependencies using pipreqs? (yes/no): " yn_pipreqs >&2
+  if [[ "$yn_pipreqs" =~ ^[Yy](es)?$ ]]; then
+    info_message "Installing pipreqs..."
+    if ! python -m pip install pipreqs 2>/dev/null; then
+      warning_message "Failed to install pipreqs. Skipping dependency detection."
+    else
+      info_message "Generating requirements.txt from your code..."
+      pipreqs . --force --ignore .venv,venv,tests,docs,build,dist,.git,.idea,.vscode,__pycache__ 2>&1 | tee pipreqs.log
+      if [ -s "$REQUIREMENTS_FILE" ]; then
+        info_message "Generated '$REQUIREMENTS_FILE' successfully."
+        cat "$REQUIREMENTS_FILE"
+        info_message "Installing detected dependencies..."
+        pip_req_install_log_file="pip_requirements_install.log"
+        if ! python -m pip install -r "$REQUIREMENTS_FILE" 2> "$pip_req_install_log_file"; then
+          warning_message "Some dependencies may have failed to install. Check '$pip_req_install_log_file' for details."
+        else
+          info_message "Dependencies installed successfully."
+        fi
+      else
+        warning_message "pipreqs could not detect any dependencies."
+      fi
+    fi
+  fi
 fi
 echo
 
