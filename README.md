@@ -99,10 +99,10 @@ pip install .
 
 Now use `pybs` anywhere.
 
-### From PyPI (Coming Soon)
+### From PyPI
 
 ```bash
-pip install pybootstrap
+pip install PythonBootstraper
 ```
 
 ## Usage
@@ -172,8 +172,37 @@ pybs --version             # Show version
 ## Requirements
 
 - Python 3.8+
-- Linux or macOS (Windows: WSL works fine)
-- That's it
+- Linux or macOS
+- Windows: Use WSL (see below)
+
+### Windows Users: Use WSL
+
+If you're on Windows, PyBootstrap works best with **WSL (Windows Subsystem for Linux)**:
+
+1. **Install WSL** (one-time):
+   ```powershell
+   # Open PowerShell as Administrator and run:
+   wsl --install
+   ```
+   Restart your computer when prompted.
+
+2. **Open WSL** and install Python:
+   ```bash
+   sudo apt update
+   sudo apt install python3 python3-venv git
+   ```
+
+3. **Use PyBootstrap normally**:
+   ```bash
+   pip install PythonBootstraper
+   pybs init --dir myproject
+   cd myproject
+   ./py_bootstrap.sh
+   ```
+
+**Why WSL?** The bootstrap scripts are bash-based, which run natively on Linux/macOS. WSL gives you a full Linux environment on Windows with minimal setup.
+
+**Alternative:** You can also run these scripts in Git Bash, but some features (like auto-opening a terminal) may not work fully.
 
 ## License
 

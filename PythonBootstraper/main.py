@@ -5,7 +5,7 @@ import stat
 from pathlib import Path
 import click
 
-from version import __version__, __author__, __description__
+from .version import __version__, __author__, __description__
 
 
 def get_template_dir() -> Path:
@@ -15,7 +15,7 @@ def get_template_dir() -> Path:
     """
     if getattr(sys, 'frozen', False):
         base_path = Path(sys._MEIPASS)
-        template_dir = base_path / 'templates'
+        template_dir = base_path / 'PythonBootstraper' / 'templates'
     else:
         base_path = Path(__file__).resolve().parent
         template_dir = base_path / 'templates'

@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools>=45", "wheel", "pyinstaller"]
+requires = ["setuptools>=45", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "pybootstrap"
-version = "1.0.0"
+name = "PythonBootstraper"
+version = "1.0.3"
 description = "A CLI tool to initialize Python projects with robust helper scripts"
 readme = "README.md"
 license = "MIT"
@@ -18,7 +18,6 @@ classifiers = [
     "Intended Audience :: Developers",
     "Operating System :: POSIX :: Linux",
     "Operating System :: MacOS :: MacOS X",
-    "Programming Language :: Bash",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
@@ -42,7 +41,7 @@ dev = [
 ]
 
 [project.scripts]
-pybs = "main:cli"
+pybs = "PythonBootstraper.main:cli"
 
 [project.urls]
 Homepage = "https://github.com/PlayWitIt/Python-Bootstrap"
@@ -50,8 +49,10 @@ Repository = "https://github.com/PlayWitIt/Python-Bootstrap"
 Issues = "https://github.com/PlayWitIt/Python-Bootstrap/issues"
 
 [tool.setuptools]
-py-modules = ["main", "version"]
-package-data = {templates = ["*"]}
+packages = ["PythonBootstraper"]
+
+[tool.setuptools.package-data]
+PythonBootstraper = ["templates/*"]
 
 [tool.black]
 line-length = 100
