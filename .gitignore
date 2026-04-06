@@ -3,7 +3,7 @@
 # --- Project Specific ---
 # User-added archived or project-specific files
 .Zicebox/
-
+diff.txt
 # --- Python Virtual Environments ---
 # Never track the virtual environment directory
 .venv/
