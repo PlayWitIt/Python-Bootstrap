@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "PythonBootstraper"
-version = "1.1.2"
+version = "1.2.0"
 description = "A CLI tool to initialize Python projects with robust helper scripts"
 readme = "README.md"
 license = "MIT"
