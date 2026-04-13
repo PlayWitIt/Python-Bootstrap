@@ -57,12 +57,9 @@ build_install_*.log
 # Generic temp files
 *.tmp
 
+# --- Development Folder ---
+# Local dev notes (not for git)
+dev/
+
 # Added by GitWitItGUI
 GoogleAIStudio Session
-
-# --- Local Development/Sandbox ---
-New Folder/
-Test Folder/
-TODO.md
-IMPROVEMENTS.md
-docs/
