@@ -6,9 +6,17 @@ import subprocess
 from pathlib import Path
 import click
 
-__version__ = "1.2.0"
-__author__ = "PlayWitIt"
-__description__ = "A tool to initialize a Python project with robust helper scripts"
+# Version - single source of truth
+# Fallback for when running as PyInstaller executable where version.py isn't bundled
+try:
+    from .version import __version__, __author__, __description__
+except (ImportError, ValueError):
+    try:
+        from version import __version__, __author__, __description__
+    except ImportError:
+        __version__ = "1.2.2"  # Hardcoded fallback for PyInstaller
+        __author__ = "PlayWitIt"
+        __description__ = "A tool to initialize a Python project with robust helper scripts"
 
 
 def get_template_dir() -> Path:
