@@ -200,6 +200,7 @@ No activation commands. No path hunting. Just code.
 ```bash
 pybs init                    # Current directory
 pybs init --dir my_project   # New directory
+pybs init --force            # Overwrite existing scripts
 ```
 
 ### pybs bootstrap (only py_bootstrap.sh)
@@ -207,6 +208,7 @@ pybs init --dir my_project   # New directory
 ```bash
 pybs bootstrap                    # Current directory
 pybs bootstrap --dir my_project   # New directory
+pybs bootstrap --force            # Overwrite existing
 ```
 
 ### pybs run (only Run.sh)
@@ -214,6 +216,16 @@ pybs bootstrap --dir my_project   # New directory
 ```bash
 pybs run                    # Current directory
 pybs run --dir my_project   # New directory
+pybs run --force            # Overwrite existing
+```
+
+### pybs exec (run scripts directly)
+
+```bash
+pybs exec myscript.py              # Run a script (auto-finds venv)
+pybs exec myscript.py --arg value  # Pass arguments to script
+pybs exec --no-venv                # Use system Python
+pybs exec                          # Run main.py or app.py if no script specified
 ```
 
 ### Other

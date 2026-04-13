@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-04-13
+
+### Added
+- `pybs exec <script.py>` - Run Python scripts directly without needing Run.sh
+- `pybs exec myscript.py --arg1 value` - Pass arguments to scripts
+- `pybs exec --no-venv` - Use system Python instead of venv
+- `--force` / `-f` flag to all commands - Overwrite existing scripts without prompting
+- Bash completion script (`templates/pybs-completion.bash`)
+- TODO.md for future roadmap
+
+### Changed
+- All commands now support `--force` flag for batch operations
+
 ## [1.1.2] - 2026-04-13
 
 ### Added
