@@ -87,4 +87,38 @@ git commit -m "Description of changes"
 git push
 ```
 
-Then proceed with build & publish steps above.
+---
+
+## Build & Publish (Complete Steps)
+
+After committing changes, run these commands in order:
+
+```bash
+# 1. Navigate to project
+cd /home/play/Code/Published/PythonBootstraper
+
+# 2. Clean previous builds
+rm -rf build dist
+
+# 3. Build PyInstaller binary
+pyinstaller --noconfirm pybs.spec
+
+# 4. Test the binary works
+./dist/pybs --version
+
+# 5. Build package for PyPI (sdist + wheel)
+python -m build --sdist --wheel
+
+# 6. Verify package is valid
+python -m twine check dist/*
+
+# 7. Upload to PyPI (get token from https://pypi.org/manage/account/)
+# Replace YOUR_TOKEN with your actual token from PyPI
+TWINE_USERNAME=__token__ TWINE_PASSWORD="YOUR_TOKEN" twine upload dist/*
+
+# 8. Verify installation on this machine
+pip install --upgrade --force-reinstall PythonBootstraper
+pybs --version
+```
+
+That's it! The new version is now live on PyPI.
