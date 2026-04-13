@@ -71,33 +71,40 @@ if [ "${_IN_TERMINAL_ALREADY:-false}" != "true" ]; then
     fi
 fi
 
-# --- Configuration ---
-set -e
-set -u
-set -o pipefail
+set -euo pipefail
+
+trap 'echo -e "\n\033[1;33mCancelled by user\033[0m"; exit 130' INT
 
 # --- Helper Functions ---
+section() {
+    echo ""
+    echo -e "\033[1;34m=== $1 ===\033[0m"
+}
+
 error_exit() {
-    echo "❌ ERROR: $1" >&2
+    echo "" >&2
+    echo -e "\033[1;31m[ERROR]\033[0m $1" >&2
     if [ -n "${2:-}" ]; then
-        echo "    Hint:" >&2
-        echo "$2" | sed 's/^/                 /g' >&2
+        echo -e "    \033[90mHint:\033[0m $2" >&2
     fi
-    # If in an active Conda environment, offer to deactivate. VIRTUAL_ENV for venv.
     if [ -n "${CONDA_SHLVL:-}" ] && [ "$CONDA_SHLVL" -gt 0 ] && [ -n "${CONDA_DEFAULT_ENV:-}" ]; then
-        echo "    Active Conda environment: $CONDA_DEFAULT_ENV. You might want to run 'conda deactivate'."
+        echo -e "    \033[90mActive Conda environment: $CONDA_DEFAULT_ENV\033[0m" >&2
     elif [ -n "${VIRTUAL_ENV:-}" ]; then
-        echo "    Active virtual environment: $VIRTUAL_ENV. You might want to run 'deactivate'."
+        echo -e "    \033[90mActive virtual environment: $VIRTUAL_ENV\033[0m" >&2
     fi
     exit 1
 }
 
 warning_message() {
-    echo "⚠️ WARNING: $1" >&2
+    echo -e "\033[1;33m[WARNING]\033[0m $1"
 }
 
 info_message() {
-    echo "ℹ️  $1"
+    echo -e "\033[1;36m[INFO]\033[0m $1"
+}
+
+success_message() {
+    echo -e "\033[1;32m[SUCCESS]\033[0m $1"
 }
 
 command_exists() {
@@ -161,11 +168,12 @@ EOF
 }
 
 # --- Main Script Logic ---
-info_message "Starting project setup..."
+section "Project Setup"
 
-# --- Step 1: Clean up old local virtual environment ---
-readonly VENV_DIR_NAME=".venv" # Name of the directory for standard venv
-info_message "Step 1: Cleaning up old local virtual environment ('$VENV_DIR_NAME')..."
+# --- Clean up old local virtual environment ---
+section "Virtual Environment Cleanup"
+readonly VENV_DIR_NAME=".venv"
+info_message "Cleaning up old local virtual environment ('$VENV_DIR_NAME')..."
 if [ -d "$VENV_DIR_NAME" ]; then
   info_message "Removing existing '$VENV_DIR_NAME'..."
   if ! rm -rf "$VENV_DIR_NAME"; then error_exit "Failed to remove '$VENV_DIR_NAME'. Check permissions."; fi
@@ -179,8 +187,8 @@ else
 fi
 echo
 
-# --- Step 2: Determine Python environment type and create it ---
-info_message "Step 2: Determining Python environment type and creating it..."
+section "Python Environment Setup"
+info_message "Determining Python environment type and creating it..."
 PYTHON_EXECUTABLE_FOR_VENV_CREATION=""
 CHOSEN_PYTHON_FOR_DISPLAY=""
 ENV_SETUP_METHOD="none" # "venv" or "conda"
@@ -249,20 +257,6 @@ Arch Linux: sudo pacman -S --noconfirm base-devel openssl zlib bzip2 readline sq
 elif [ -n "$PYTHON_VERSION_FROM_FILE" ] && [ "$PYTHON_VERSION_FROM_FILE" != "system" ] && ! command_exists "pyenv"; then
     warning_message "'.python-version' specifies '$PYTHON_VERSION_FROM_FILE', but 'pyenv' command is not installed or not in PATH. Will try other methods."
 fi
-
-  # --- BEGIN DEBUG FOR CONDA PATH ---
-  info_message "DEBUG: Current ENV_SETUP_METHOD is: $ENV_SETUP_METHOD"
-  info_message "DEBUG: Testing 'command -v conda' directly before Conda block..."
-  if command -v conda &> /dev/null; then
-    info_message "DEBUG: 'command -v conda' SUCCEEDED before Conda block. Path: $(command -v conda)"
-  else
-    info_message "DEBUG: 'command -v conda' FAILED before Conda block."
-    info_message "DEBUG: Current PATH variable within script before Conda block:"
-    echo "$PATH" | tr ':' '\n' | sed 's/^/    DEBUG: PATH entry: /'
-  fi
-  info_message "DEBUG: Output of 'type conda' before Conda block:"
-  type conda || info_message "DEBUG: 'type conda' also failed before Conda block"
-  # --- END DEBUG FOR CONDA PATH ---
 
 # --- Attempt 2: conda (if pyenv was not used for a specific version, and conda is available) ---
 if [ "$ENV_SETUP_METHOD" == "none" ] && command_exists "conda"; then
@@ -460,7 +454,7 @@ if [ "$ENV_SETUP_METHOD" == "none" ]; then
     error_exit "No system Python (python3 or python) found in your system's PATH." "Please install Python 3, or ensure 'python3' or 'python' is accessible."
   fi
 
-  info_message "Using system Python: $PYTHON_EXECUTABLE_FOR_VENV_CREATION" # Corrected variable name here
+  info_message "Using system Python: $PYTHON_EXECUTABLE_FOR_VENV_CREATION"
   if ! "$PYTHON_EXECUTABLE_FOR_VENV_CREATION" -m venv "$VENV_PATH_FOR_SCRIPT"; then
     error_exit "Failed to create venv using system Python ($PYTHON_EXECUTABLE_FOR_VENV_CREATION)." \
                "Ensure 'venv' module is available for this Python (e.g., install 'python3-venv' on Debian/Ubuntu, or 'python3-virtualenv' on some systems)."
@@ -482,8 +476,8 @@ fi
 info_message "Effective Python for environment: $CHOSEN_PYTHON_FOR_DISPLAY"
 echo
 
-# --- Step 3: Activate environment and install dependencies ---
-info_message "Step 3: Activating environment for script session and installing dependencies..."
+# --- Activate environment and install dependencies ---
+section "Dependency Installation"
 
 if [ "$ENV_SETUP_METHOD" == "conda" ]; then
     if [ "$CONDA_NEEDS_OPENSSL_FIX" = true ]; then
@@ -620,8 +614,8 @@ fi
 echo
 
 
-# --- Step 4: Optional Git Repository Initialization and .gitignore creation ---
-info_message "Step 4: Optional Git Repository Initialization and .gitignore creation..."
+# --- Optional Git Repository Initialization and .gitignore creation ---
+section "Git Setup"
 GIT_INITIALIZED_BY_SCRIPT=false
 current_branch_name=""
 gitignore_venv_dir_param=""
@@ -677,31 +671,34 @@ fi
 echo
 
 # --- Completion Summary ---
-info_message "✅ Project setup complete!"
-info_message "   Environment setup method: $ENV_SETUP_METHOD"
+section "Complete"
+success_message "Project setup complete!"
+echo ""
+info_message "Environment setup method: $ENV_SETUP_METHOD"
 if [ "$ENV_SETUP_METHOD" == "conda" ]; then
-    info_message "   Conda environment name: '$CONDA_ENV_NAME'"
+    info_message "Conda environment name: '$CONDA_ENV_NAME'"
     if [ "$CONDA_NEEDS_OPENSSL_FIX" = true ]; then
-        warning_message "   NOTE: Your Conda installation showed signs of the OpenSSL 3.0 legacy provider issue."
-        warning_message "         This script attempted to work around it for its own execution."
-        warning_message "         For reliable Conda use outside this script, you may need to permanently set:"
-        warning_message "         export CRYPTOGRAPHY_OPENSSL_NO_LEGACY=1"
-        warning_message "         in your shell's startup file (e.g., ~/.bashrc or ~/.zshrc) and open a new terminal."
+        warning_message "NOTE: Your Conda installation showed signs of the OpenSSL 3.0 legacy provider issue."
+        warning_message "This script attempted to work around it for its own execution."
+        warning_message "For reliable Conda use outside this script, you may need to permanently set:"
+        warning_message "export CRYPTOGRAPHY_OPENSSL_NO_LEGACY=1"
+        warning_message "in your shell's startup file (e.g., ~/.bashrc or ~/.zshrc) and open a new terminal."
     fi
 else
-    info_message "   Local venv directory: '$VENV_PATH_FOR_SCRIPT'"
+    info_message "Local venv directory: '$VENV_PATH_FOR_SCRIPT'"
 fi
-info_message "   Effective Python for environment: $CHOSEN_PYTHON_FOR_DISPLAY"
+info_message "Effective Python for environment: $CHOSEN_PYTHON_FOR_DISPLAY"
 
-if [ -f "$REQUIREMENTS_FILE" ] && [ -s "$REQUIREMENTS_FILE" ]; then info_message "   Dependencies from '$REQUIREMENTS_FILE' were installed.";
-elif [ -f "$REQUIREMENTS_FILE" ]; then info_message "   '$REQUIREMENTS_FILE' empty, no dependencies installed from it.";
-else info_message "   No '$REQUIREMENTS_FILE' found, no dependencies installed from it."; fi
+if [ -f "$REQUIREMENTS_FILE" ] && [ -s "$REQUIREMENTS_FILE" ]; then info_message "Dependencies from '$REQUIREMENTS_FILE' were installed.";
+elif [ -f "$REQUIREMENTS_FILE" ]; then info_message "'$REQUIREMENTS_FILE' empty, no dependencies installed from it.";
+else info_message "No '$REQUIREMENTS_FILE' found, no dependencies installed from it."; fi
 
-if $GIT_INITIALIZED_BY_SCRIPT; then info_message "   New Git repository initialized.";
-elif [ -d ".git" ]; then info_message "   Project is already a Git repository.";
-elif command_exists "git"; then info_message "   Git repository not initialized by script.";
-else info_message "   'git' not found; Git operations skipped."; fi
+if $GIT_INITIALIZED_BY_SCRIPT; then info_message "New Git repository initialized.";
+elif [ -d ".git" ]; then info_message "Project is already a Git repository.";
+elif command_exists "git"; then info_message "Git repository not initialized by script.";
+else info_message "'git' not found; Git operations skipped."; fi
 
+echo ""
 info_message "To activate the environment in your current terminal session for development, run:"
 info_message "$ACTIVATION_COMMAND_FOR_USER"
 

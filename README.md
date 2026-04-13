@@ -42,8 +42,10 @@ pybootstrap automates all of it - one command, and you're ready to code.
 - **Zero-Config Running** (`Run.sh`):
     - Just run `./Run.sh` - always works
     - Auto-activates your venv
-    - Finds your script (main.py, app.py, etc.)
+    - Finds your script (main.py, app.py, etc.) in any subdirectory
+    - Shows interactive menu if no default script found
     - Remembers your choice for next time
+    - Color-coded output for easy reading
 
 ## Quick Demo
 
@@ -65,18 +67,31 @@ Next steps:
 $ cd my_project
 
 $ ./py_bootstrap.sh
-ℹ️  Starting project setup...
-ℹ️  Creating virtual environment...
-ℹ️  Installing dependencies...
-✅ Project ready! Just run ./Run.sh
+=== Project Setup ===
+[INFO] Detecting Python...
+[SUCCESS] Using: Python 3.12.0 (pyenv)
+[INFO] Creating virtual environment...
+[INFO] Installing dependencies...
+[SUCCESS] Project ready! Just run ./Run.sh
 
 $ echo 'print("Hello!")' > main.py
 
 $ ./Run.sh
-[INFO] Found '.venv' directory.
-[INFO] Activating virtual environment...
-[INFO] Running main.py...
+=== Virtual Environment ===
+[INFO] Checking for virtual environment...
+[SUCCESS] Found: .venv
+
+=== Script Selection ===
+[SUCCESS] Found 'main.py'
+
+=== Execution ===
+Running: main.py
+Using:   /home/user/my_project/.venv/bin/python
+
 Hello!
+
+=== Complete ===
+[SUCCESS] Script finished successfully (exit code: 0)
 ```
 
 ## Installation

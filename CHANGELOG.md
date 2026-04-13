@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-04-13
+
+### Added
+- Enhanced Run.sh UI with color-coded output (INFO, SUCCESS, ERROR, section headers)
+- Ctrl+C interrupt handling with user-friendly message
+- Scans all subdirectories for Python scripts (not limited to 2 levels)
+- Excludes .venv and venv folders from script search
+
+### Changed
+- Improved script detection logic using `printf "%P\n"` for proper relative paths
+- Simplified and cleaned up Run.sh code
+- Updated auto-launch terminal messages for consistency
+
+### Fixed
+- Run.sh now correctly finds Python scripts in nested folders
+
 ## [1.0.0] - 2026-03-03
 
 ### Added

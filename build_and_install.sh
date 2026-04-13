@@ -9,7 +9,7 @@ COMMAND_NAME="pybs"                       # The command users will type
 # --- Behavior Configuration ---
 # Set to true to always rebuild the .spec file from the Python script, skipping the prompt.
 # Set to false to be prompted if an existing .spec file is found.
-FORCE_REBUILD_SPEC=true # Always rebuild, simpler for this tool
+FORCE_REBUILD_SPEC=false # Always rebuild, simpler for this tool
 
 # --- PyInstaller Data/Assets Configuration (OPTIONAL) ---
 # **Simple Asset Bundling:**
