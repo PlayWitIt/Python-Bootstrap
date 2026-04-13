@@ -59,7 +59,7 @@ build_install_*.log
 
 # --- Development Folder ---
 # Local dev notes (not for git)
-# dev/  # (commented out - tracked in git)
+dev/
 
 # Added by GitWitItGUI
 GoogleAIStudio Session
