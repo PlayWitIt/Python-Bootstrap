@@ -120,5 +120,4 @@ TWINE_USERNAME=__token__ TWINE_PASSWORD="YOUR_TOKEN" twine upload dist/*
 pip install --upgrade --force-reinstall PythonBootstraper
 pybs --version
 ```
-
-That's it! The new version is now live on PyPI.
+The new version is now live on PyPI.

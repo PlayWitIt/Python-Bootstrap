@@ -3,1049 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PyBootstrap Tutorial</title>
+    <title>PyBootstrap</title>
     <style>
-        :root {
-            --primary: #3776ab;
-            --secondary: #ffd343;
-            --dark: #1a1a2e;
-            --light: #f8f9fa;
-            --code-bg: #282c34;
-            --success: #28a745;
-            --warning: #ffc107;
-            --danger: #dc3545;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            line-height: 1.7;
-            color: var(--dark);
-            background: var(--light);
-        }
-        
-        header {
-            background: linear-gradient(135deg, var(--primary), #1e3a5f);
-            color: white;
-            padding: 3rem 2rem;
-            text-align: center;
-        }
-        
-        header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        header p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-        }
-        
-        nav {
-            background: var(--dark);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        
-        nav ul {
-            display: flex;
-            justify-content: center;
-            list-style: none;
-            padding: 1rem;
-            flex-wrap: wrap;
-        }
-        
-        nav a {
-            color: white;
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-            margin: 0 0.25rem;
-            border-radius: 4px;
-            transition: background 0.3s;
-        }
-        
-        nav a:hover, nav a.active {
-            background: var(--primary);
-        }
-        
-        main {
-            max-width: 900px;
+            font-family: "Liberation Sans", Arial, sans-serif;
+            max-width: 800px;
             margin: 0 auto;
-            padding: 2rem;
-        }
-        
-        section {
-            margin-bottom: 3rem;
-            scroll-margin-top: 80px;
-        }
-        
-        h2 {
-            color: var(--primary);
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 3px solid var(--secondary);
-        }
-        
-        h3 {
-            font-size: 1.3rem;
-            margin: 1.5rem 0 0.75rem;
+            padding: 20px;
+            line-height: 1.5;
             color: #333;
+            background: #fff;
         }
-        
-        p {
-            margin-bottom: 1rem;
-        }
-        
-        .card {
-            background: white;
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin: 1rem 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
-            margin: 1.5rem 0;
-        }
-        
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 0.75rem;
-        }
-        
-        .card-icon {
-            width: 40px;
-            height: 40px;
-            background: var(--primary);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.2rem;
-        }
-        
-        .card-title {
-            font-weight: 600;
-            color: var(--dark);
-        }
-        
+        h1 { border-bottom: 2px solid #3776ab; padding-bottom: 10px; }
+        h2 { margin-top: 30px; color: #3776ab; }
+        h3 { margin-top: 20px; }
         code {
-            background: var(--code-bg);
-            color: #abb2bf;
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9em;
-        }
-        
-        pre {
-            background: var(--code-bg);
-            color: #abb2bf;
-            padding: 1rem;
-            border-radius: 8px;
-            overflow-x: auto;
-            margin: 1rem 0;
-        }
-        
-        pre code {
-            background: none;
-            padding: 0;
-            color: #abb2bf;
-        }
-        
-        .command {
-            background: #1e1e1e;
-            color: #4ec9b0;
-            padding: 0.15rem 0.4rem;
+            background: #f4f4f4;
+            padding: 2px 6px;
             border-radius: 3px;
-            font-family: 'Courier New', monospace;
-        }
-        
-        .highlight-box {
-            background: linear-gradient(135deg, #e8f4fd, #f0f7ff);
-            border-left: 4px solid var(--primary);
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 0 8px 8px 0;
-        }
-        
-        .warning-box {
-            background: #fff8e1;
-            border-left: 4px solid var(--warning);
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 0 8px 8px 0;
-        }
-        
-        .success-box {
-            background: #e8f5e9;
-            border-left: 4px solid var(--success);
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 0 8px 8px 0;
-        }
-        
-        .diagram {
-            background: white;
-            padding: 2rem;
-            border-radius: 8px;
-            margin: 1.5rem 0;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        .flow-step {
-            display: inline-block;
-            padding: 0.75rem 1.5rem;
-            background: var(--primary);
-            color: white;
-            border-radius: 25px;
-            margin: 0.25rem;
-        }
-        
-        .flow-arrow {
-            color: var(--primary);
-            font-size: 1.5rem;
-            margin: 0 0.5rem;
-        }
-        
-        .arrow-down {
-            display: block;
-            text-align: center;
-            color: var(--primary);
-            font-size: 2rem;
-            margin: 0.5rem 0;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1rem 0;
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        th, td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid #eee;
-        }
-        
-        th {
-            background: var(--primary);
-            color: white;
-        }
-        
-        tr:hover {
-            background: #f5f5f5;
-        }
-        
-        .tabs {
-            display: flex;
-            border-bottom: 2px solid #eee;
-            margin-bottom: 1rem;
-        }
-        
-        .tab {
-            padding: 0.75rem 1.5rem;
-            cursor: pointer;
-            border: none;
-            background: none;
-            font-size: 1rem;
-            color: #666;
-            transition: all 0.3s;
-        }
-        
-        .tab.active {
-            color: var(--primary);
-            border-bottom: 2px solid var(--primary);
-            margin-bottom: -2px;
-        }
-        
-        .tab-content {
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        .progress-bar {
-            height: 6px;
-            background: #eee;
-            border-radius: 3px;
-            margin: 1rem 0;
-            overflow: hidden;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            border-radius: 3px;
-            transition: width 0.5s ease;
-        }
-        
-        .interactive-demo {
-            background: white;
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin: 1rem 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        .demo-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        
-        .demo-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(55,118,171,0.4);
-        }
-        
-        .demo-output {
-            background: var(--code-bg);
-            color: #abb2bf;
-            padding: 1rem;
-            border-radius: 6px;
-            margin-top: 1rem;
             font-family: monospace;
-            min-height: 60px;
         }
-        
-        footer {
-            background: var(--dark);
-            color: white;
-            text-align: center;
-            padding: 2rem;
-            margin-top: 4rem;
+        pre {
+            background: #f4f4f4;
+            padding: 15px;
+            overflow-x: auto;
+            border-left: 4px solid #3776ab;
         }
-        
-        .toc {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin-bottom: 2rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 10px;
+            margin: 15px 0;
         }
-        
-        .toc h3 {
-            margin-top: 0;
+        .note {
+            background: #d1ecf1;
+            border: 1px solid #17a2b8;
+            padding: 10px;
+            margin: 15px 0;
         }
-        
-        .toc ul {
-            list-style: none;
-        }
-        
-        .toc li {
-            margin: 0.5rem 0;
-        }
-        
-        .toc a {
-            color: var(--primary);
-            text-decoration: none;
-        }
-        
-        .toc a:hover {
-            text-decoration: underline;
-        }
-        
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 1.8rem;
-            }
-            
-            main {
-                padding: 1rem;
-            }
-            
-            nav ul {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .card-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        .fade-in {
-            animation: fadeIn 0.5s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        ul, ol { margin-left: 25px; }
+        li { margin: 8px 0; }
+        hr { margin: 30px 0; border: none; border-top: 1px solid #ddd; }
+        a { color: #3776ab; }
     </style>
 </head>
 <body>
-    <header>
-        <h1>🚀 PyBootstrap Tutorial</h1>
-        <p>From Zero to Python Project in Seconds</p>
-    </header>
-    
-    <nav>
-        <ul>
-            <li><a href="#overview">Overview</a></li>
-            <li><a href="#workflow">Workflow</a></li>
-            <li><a href="#components">Components</a></li>
-            <li><a href="#technical">Technical Deep Dive</a></li>
-            <li><a href="#comparison">Why It Matters</a></li>
-            <li><a href="#faq">FAQ</a></li>
-        </ul>
-    </nav>
-    
-    <main>
-        <section id="overview">
-            <h2>What is PyBootstrap?</h2>
-            
-            <p>PyBootstrap is a tool that eliminates the tedious setup work when starting a new Python project. Instead of manually creating virtual environments, installing dependencies, and configuring Git - you run one command and start coding.</p>
-            
-            <div class="highlight-box">
-                <strong>🎯 The Goal:</strong> Go from "I want to write Python" to "running code" in seconds, not minutes.
-            </div>
-            
-            <h3>The Problem It Solves</h3>
-            
-            <p>Every Python project requires the same setup steps:</p>
-            
-            <div class="card">
-                <ol style="margin-left: 1.5rem;">
-                    <li style="margin: 0.5rem 0;">Create project directory</li>
-                    <li style="margin: 0.5rem 0;"><code class="command">python -m venv .venv</code> - Create virtual environment</li>
-                    <li style="margin: 0.5rem 0;"><code class="command">source .venv/bin/activate</code> - Activate it</li>
-                    <li style="margin: 0.5rem 0;">Install dependencies with pip</li>
-                    <li style="margin: 0.5rem 0;">Create <code>requirements.txt</code></li>
-                    <li style="margin: 0.5rem 0;">Create <code>.gitignore</code></li>
-                    <li style="margin: 0.5rem 0;">Initialize Git repository</li>
-                </ol>
-                <p style="margin-top: 1rem; color: #666;"><em>That's 7 steps before writing your first line of code!</em></p>
-            </div>
-            
-            <h3>The PyBootstrap Solution</h3>
-            
-            <div class="diagram">
-                <div class="flow-step">pybs init</div>
-                <span class="flow-arrow">→</span>
-                <div class="flow-step">./py_bootstrap.sh</div>
-                <span class="flow-arrow">→</span>
-                <div class="flow-step">./Run.sh</div>
-                <span class="flow-arrow">→</span>
-                <div class="flow-step" style="background: var(--success);">💻 Code!</div>
-            </div>
-            
-            <p>That's it. Three commands max, and after the first time, just <code class="command">./Run.sh</code>.</p>
-        </section>
-        
-        <section id="workflow">
-            <h2>How It Works: Step by Step</h2>
-            
-            <h3>Step 1: Initialize (One Time)</h3>
-            
-            <div class="tabs">
-                <button class="tab active" onclick="showTab('cli')">Using CLI</button>
-                <button class="tab" onclick="showTab('manual')">Manual</button>
-            </div>
-            
-            <div id="cli" class="tab-content active">
-                <pre><code># Install pybootstrap
-pip install pybootstrap
+    <h1>PyBootstrap</h1>
+    <p>Quick setup for Python projects. One command, then start coding.</p>
 
-# Initialize with both scripts (default)
-pybs init --dir my_project
-pybs init                    # Current directory
-pybs init --force            # Overwrite existing
+    <h2>Install</h2>
+    <pre><code>pip install PythonBootstraper</code></pre>
 
-# Or create only one script:
-pybs bootstrap --dir my_project   # Just py_bootstrap.sh
-pybs run --dir my_project           # Just Run.sh
+    <h2>Quick Start</h2>
+    <pre><code># Create project with both scripts
+pybs init
 
-# Or run scripts directly (no Run.sh needed):
-pybs exec myscript.py
-pybs exec myscript.py --arg value  # Pass arguments
-pybs exec --no-venv                # Use system Python</code></pre>
-            </div>
-            
-            <div id="manual" class="tab-content">
-                <pre><code># Download py_bootstrap.sh and Run.sh from this repo
-# Or copy them from an existing project</code></pre>
-            </div>
-            
-            <h3>Step 2: Setup Environment (One Time Per Project)</h3>
-            
-            <pre><code>./py_bootstrap.sh</code></pre>
-            
-            <p>This script will:</p>
-            <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
-                <li>Detect your Python (pyenv, conda, or system)</li>
-                <li>Create a virtual environment (.venv)</li>
-                <li>Install dependencies from requirements.txt</li>
-                <li><strong>✨ Auto-detect dependencies if requirements.txt is missing (using pipreqs)</strong></li>
-                <li>Offer to initialize Git with .gitignore</li>
-            </ul>
-            
-            <div class="highlight-box" style="background: linear-gradient(135deg, #e8f5e9, #c8e6c9); border-left-color: #28a745;">
-                <h4 style="color: #2e7d32; margin-top: 0;">🤖 Magic Feature: Auto-Detect Dependencies</h4>
-                <p style="margin-bottom: 0;"><strong>No requirements.txt? No problem!</strong></p>
-                <p>PyBootstrap uses <strong>pipreqs</strong> to automatically scan your Python code and generate a requirements.txt file. It reads your imports and finds the exact packages you need. Just say "yes" when asked!</p>
-                <pre style="margin-top: 1rem; margin-bottom: 0;"><code># What happens when requirements.txt is missing:
-# 1. PyBootstrap asks: "Auto-detect dependencies?"
-# 2. You say: "Yes"
-# 3. pipreqs scans your code
-# 4. requirements.txt is created automatically
-# 5. Dependencies are installed
-# Done!</code></pre>
-            </div>
-            
-            <div class="interactive-demo">
-                <h4>Try It: Environment Detection</h4>
-                <p>Click the button to see what PyBootstrap detects on this system:</p>
-                <button class="demo-btn" onclick="detectEnvironment()">Detect My Environment</button>
-                <div class="demo-output" id="env-output">Click button to see detection results...</div>
-            </div>
-            
-            <h3>Step 3: Run Your Code (Every Time)</h3>
-            
-            <pre><code>./Run.sh</code></pre>
-            
-            <p>Run.sh automatically:</p>
-            <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
-                <li>Finds your virtual environment</li>
-                <li>Activates it</li>
-                <li>Locates your Python script (main.py, app.py, etc.) in any subdirectory</li>
-                <li>Shows interactive menu if no default script found</li>
-                <li>Can save your selection as the default for next time</li>
-            </ul>
-            
-            <div class="success-box">
-                <strong>No more remembering:</strong> Which Python? Which venv? What was the script name? Just run ./Run.sh
-            </div>
-        </section>
-        
-        <section id="components">
-            <h2>Understanding the Components</h2>
-            
-            <div class="card-grid">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-icon">📦</div>
-                        <div class="card-title">pybs (CLI)</div>
-                    </div>
-                    <p>The command-line tool that initializes projects and builds the executable. Built with Click and packaged with PyInstaller.</p>
-                </div>
-                
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-icon">⚙️</div>
-                        <div class="card-title">py_bootstrap.sh</div>
-                    </div>
-                    <p>The setup script. Run once per project. Creates venv, installs deps, sets up Git.</p>
-                </div>
-                
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-icon">▶️</div>
-                        <div class="card-title">Run.sh</div>
-                    </div>
-                    <p>The runner script. Run every time you want to execute your code. Finds venv and script automatically.</p>
-                </div>
-                
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-icon">📋</div>
-                        <div class="card-title">templates/</div>
-                    </div>
-                    <p>Folder bundled into pybs executable. Contains py_bootstrap.sh and Run.sh to copy into new projects.</p>
-                </div>
-                
-                <div class="card" style="border: 2px solid #28a745; background: linear-gradient(135deg, #f1f8e9, #e8f5e9);">
-                    <div class="card-header">
-                        <div class="card-icon" style="background: #28a745;">✨</div>
-                        <div class="card-title">pipreqs (Under the Hood)</div>
-                    </div>
-                    <p><strong>The secret sauce!</strong> When you don't have a requirements.txt, PyBootstrap uses pipreqs to automatically scan your Python code, detect what you import, and generate the exact dependencies you need.</p>
-                    <p style="margin-bottom: 0;"><em>No more manually listing packages!</em></p>
-                </div>
-            </div>
-            
-            <h3>File Structure</h3>
-            
-            <pre><code>your-project/
-├── .venv/                  # Virtual environment (created by py_bootstrap.sh)
-├── templates/              # Bundled templates (not needed after init)
-├── main.py                # Your code
-├── requirements.txt       # Your dependencies
-├── py_bootstrap.sh        # Setup script (from pybs init)
-├── Run.sh                 # Runner script (from pybs init)
-└── .git/                  # Git repository (optional)</code></pre>
-            
-            <h3>How They Work Together</h3>
-            
-            <div class="diagram">
-                <svg width="100%" height="200" viewBox="0 0 800 200">
-                    <defs>
-                        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-                            <polygon points="0 0, 10 3.5, 0 7" fill="#3776ab"/>
-                        </marker>
-                    </defs>
-                    
-                    <rect x="50" y="70" width="120" height="60" rx="8" fill="#3776ab"/>
-                    <text x="110" y="105" text-anchor="middle" fill="white" font-weight="bold">pybs init</text>
-                    
-                    <line x1="170" y1="100" x1="230" y2="100" stroke="#3776ab" stroke-width="2" marker-end="url(#arrowhead)"/>
-                    
-                    <rect x="230" y="70" width="120" height="60" rx="8" fill="#ffd343"/>
-                    <text x="290" y="105" text-anchor="middle" fill="#1a1a2e" font-weight="bold">Creates</text>
-                    
-                    <line x1="350" y1="100" x1="410" y2="100" stroke="#3776ab" stroke-width="2" marker-end="url(#arrowhead)"/>
-                    
-                    <rect x="410" y="70" width="120" height="60" rx="8" fill="#28a745"/>
-                    <text x="470" y="105" text-anchor="middle" fill="white" font-weight="bold">Run</text>
-                    
-                    <line x1="530" y1="100" x1="590" y2="100" stroke="#3776ab" stroke-width="2" marker-end="url(#arrowhead)"/>
-                    
-                    <rect x="590" y="70" width="120" height="60" rx="8" fill="#dc3545"/>
-                    <text x="650" y="105" text-anchor="middle" fill="white" font-weight="bold">Code Runs!</text>
-                    
-                    <rect x="540" y="150" width="140" height="30" rx="5" fill="#eee"/>
-                    <text x="610" y="170" text-anchor="middle" fill="#666" font-size="12">Creates .venv</text>
-                </svg>
-            </div>
-        </section>
-        
-        <section id="technical">
-            <h2>Technical Deep Dive</h2>
-            
-            <h3>How pybs init Works</h3>
-            
-            <p>When you run <code class="command">pybs init</code>, here's what happens:</p>
-            
-            <div class="progress-bar">
-                <div class="progress-fill" style="width: 25%;"></div>
-            </div>
-            
-            <ol style="margin-left: 1.5rem;">
-                <li style="margin: 0.75rem 0;"><strong>Find templates:</strong> Locates the bundled <code>templates/</code> folder (works both from source and PyInstaller executable)</li>
-                <li style="margin: 0.75rem 0;"><strong>Copy files:</strong> Copies <code>py_bootstrap.sh</code> and <code>Run.sh</code> (or just one based on command)</li>
-                <li style="margin: 0.75rem 0;"><strong>Make executable:</strong> Sets execute permissions on the copied scripts</li>
-                <li style="margin: 0.75rem 0;"><strong>Print instructions:</strong> Shows the user next steps</li>
-            </ol>
-            
-            <div class="success-box" style="margin-top: 1rem;">
-                <strong>Available Commands:</strong>
-                <ul style="margin-top: 0.5rem; margin-bottom: 0;">
-                    <li><code>pybs init</code> - Creates both scripts (default)</li>
-                    <li><code>pybs bootstrap</code> - Creates only py_bootstrap.sh</li>
-                    <li><code>pybs run</code> - Creates only Run.sh</li>
-                    <li><code>pybs exec script.py</code> - Run scripts directly</li>
-                </ul>
-            </div>
-            
-            <h3>How py_bootstrap.sh Works</h3>
-            
-            <div class="tabs">
-                <button class="tab active" onclick="showTab('detect')">Detection</button>
-                <button class="tab" onclick="showTab('venv')">Venv Creation</button>
-                <button class="tab" onclick="showTab('deps')">Dependencies</button>
-                <button class="tab" onclick="showTab('git')">Git Setup</button>
-            </div>
-            
-            <div id="detect" class="tab-content active">
-                <h4>Python Detection Order</h4>
-                <ol style="margin-left: 1.5rem;">
-                    <li>Check for <code>.python-version</code> file → use pyenv</li>
-                    <li>Check for conda installation → use conda</li>
-                    <li>Fallback to system Python</li>
-                </ol>
-                <pre><code># The detection logic in py_bootstrap.sh:
-if command -v pyenv &> /dev/null && [ -f .python-version ]; then
-    # Use pyenv
-elif command -v conda &> /dev/null; then
-    # Use conda
-else
-    # Use system Python
-fi</code></pre>
-            </div>
-            
-            <div id="venv" class="tab-content">
-                <h4>Virtual Environment Creation</h4>
-                <p>Uses Python's built-in venv module:</p>
-                <pre><code>python -m venv .venv</code></pre>
-                <p>Then activates it:</p>
-                <pre><code>source .venv/bin/activate</code></pre>
-            </div>
-            
-            <div id="deps" class="tab-content">
-                <h4>Dependency Installation</h4>
-                <ol style="margin-left: 1.5rem;">
-                    <li>If <code>requirements.txt</code> exists → install from it</li>
-                    <li>If <code>requirements.txt</code> is empty/missing → offer to use <strong>pipreqs</strong> to auto-detect</li>
-                </ol>
-                <div class="success-box">
-                    <h4 style="margin-top: 0;">🤖 How pipreqs Works</h4>
-                    <p style="margin-bottom: 0.5rem;"><strong>pipreqs</strong> scans your Python files and:</p>
-                    <ol style="margin-left: 1.5rem; margin-bottom: 0;">
-                        <li>Parses all <code>import</code> and <code>from ... import</code> statements</li>
-                        <li>Maps them to their PyPI package names</li>
-                        <li>Generates a clean requirements.txt</li>
-                    </ol>
-                    <pre style="margin-top: 1rem;"><code># Example pipreqs command:
-pipreqs . --force --ignore .venv,tests,docs
+# Or in a new folder
+pybs init --dir myproject
 
-# The --ignore flag skips folders you don't want scanned</code></pre>
-                    <p style="margin-bottom: 0;"><em>PyBootstrap runs this automatically when you say "yes" - you don't even see the command!</em></p>
-                </div>
-            </div>
-            
-            <div id="git" class="tab-content">
-                <h4>Git Initialization</h4>
-                <p>Offers to:</p>
-                <ul style="margin-left: 1.5rem;">
-                    <li>Initialize a new repository</li>
-                    <li>Create .gitignore with Python defaults</li>
-                    <li>Set default branch to "main"</li>
-                </ul>
-            </div>
-            
-            <h3>How Run.sh Works</h3>
-            
-            <pre><code># Simplified logic:
-1. Find venv (.venv or venv)
-2. Find script: main.py → app.py → myapp.py (in any subdirectory)
-3. If no default found: show interactive menu of all .py files
-4. Activate venv
-5. Run script with any args passed to Run.sh
-6. Ask to save selection as default for next time</code></pre>
-            
-            <div class="success-box">
-                <h4 style="margin-top: 0;">✨ New: Color-Coded Output</h4>
-                <p style="margin-bottom: 0;">Run.sh now features color-coded output for easy reading:</p>
-                <ul style="margin-top: 0.5rem; margin-bottom: 0;">
-                    <li><span style="color: #06b6d4;">[INFO]</span> - General information</li>
-                    <li><span style="color: #22c55e;">[SUCCESS]</span> - Successful operations</li>
-                    <li><span style="color: #ef4444;">[ERROR]</span> - Errors and failures</li>
-                    <li><span style="color: #3b82f6;">=== Section ===</span> - Section headers</li>
-                </ul>
-            </div>
-            
-            <h3>Building the Executable</h3>
-            
-            <p>PyInstaller bundles everything into a single executable:</p>
-            
-            <pre><code>pyinstaller --onefile --add-data "templates:templates" --name "pybs" main.py</code></pre>
-            
-            <table>
-                <tr>
-                    <th>Flag</th>
-                    <th>Purpose</th>
-                </tr>
-                <tr>
-                    <td><code>--onefile</code></td>
-                    <td>Bundle everything into a single executable</td>
-                </tr>
-                <tr>
-                    <td><code>--add-data</code></td>
-                    <td>Include templates folder in the bundle</td>
-                </tr>
-                <tr>
-                    <td><code>--name</code></td>
-                    <td>Name of the output executable</td>
-                </tr>
-            </table>
-        </section>
-        
-        <section id="comparison">
-            <h2>Why PyBootstrap Matters</h2>
-            
-            <h3>Traditional Setup vs PyBootstrap</h3>
-            
-            <table>
-                <tr>
-                    <th>Task</th>
-                    <th>Traditional</th>
-                    <th>With PyBootstrap</th>
-                </tr>
-                <tr>
-                    <td>Initial setup</td>
-                    <td>7+ commands manually</td>
-                    <td><code>pybs init && ./py_bootstrap.sh</code></td>
-                </tr>
-                <tr>
-                    <td>Running code</td>
-                    <td>Remember activate command</td>
-                    <td><code>./Run.sh</code></td>
-                </tr>
-                <tr>
-                    <td>New team member</td>
-                    <td>Document all steps</td>
-                    <td>Share scripts + one command</td>
-                </tr>
-                <tr>
-                    <td>Multiple projects</td>
-                    <td>Repeat setup each time</td>
-                    <td>Use same scripts everywhere</td>
-                </tr>
-            </table>
-            
-            <h3>Who Benefits?</h3>
-            
-            <div class="card-grid">
-                <div class="card">
-                    <h4>👶 Beginners</h4>
-                    <p>Don't need to understand venv, PATH, or system Python. Just run the scripts.</p>
-                </div>
-                
-                <div class="card">
-                    <h4>👨‍💻 Professionals</h4>
-                    <p>Skip repetitive setup. Start coding immediately on each new project.</p>
-                </div>
-                
-                <div class="card">
-                    <h4>👨‍🏫 Educators</h4>
-                    <p>Students can focus on learning Python, not fighting environment issues.</p>
-                </div>
-                
-                <div class="card">
-                    <h4>🏢 Teams</h4>
-                    <p>Consistent setup across all developers. Share the scripts via git.</p>
-                </div>
-            </div>
-            
-            <h3>It's Optional!</h3>
-            
-            <div class="highlight-box">
-                <p>PyBootstrap doesn't replace your knowledge of Python environments - it just saves time. You can always do things manually if you prefer. The scripts are just helpers, not requirements.</p>
-            </div>
-        </section>
-        
-        <section id="faq">
-            <h2>Frequently Asked Questions</h2>
-            
-            <div class="card">
-                <h4>Q: Is this safe? What if it breaks my Python?</h4>
-                <p><strong>A:</strong> Completely safe! PyBootstrap uses virtual environments, which are isolated from your system Python. Nothing you do with these scripts affects other Python projects.</p>
-            </div>
-            
-            <div class="card">
-                <h4>Q: Can I use this on Windows?</h4>
-                <p><strong>A:</strong> The scripts are bash (Linux/macOS), but work great on Windows via WSL (Windows Subsystem for Linux). For native Windows, you can use Git Bash or the scripts in WSL.</p>
-            </div>
-            
-            <div class="card" style="border-left: 4px solid #28a745; background: linear-gradient(135deg, #f1f8e9, #e8f5e9);">
-                <h4 style="color: #2e7d32;">Q: What if I don't have requirements.txt?</h4>
-                <p><strong>A:</strong> No problem! PyBootstrap uses <strong>pipreqs</strong> to automatically scan your code and generate requirements.txt for you. Just say "Yes" when asked - it does all the work!</p>
-            </div>
-            
-            <div class="card">
-                <h4>Q: Can my script be in a subfolder?</h4>
-                <p><strong>A:</strong> Yes! Run.sh scans all subdirectories to find your Python scripts. If it can't find main.py/app.py/myapp.py, it shows an interactive menu with all available .py files. You can also type a custom path to a script in any subfolder.</p>
-            </div>
-            
-            <div class="card">
-                <h4>Q: Can I customize the scripts?</h4>
-                <p><strong>A:</strong> Absolutely! The scripts are yours. Modify them to fit your workflow. You can even commit your customized versions to share with your team.</p>
-            </div>
-            
-            <div class="card">
-                <h4>Q: Do I need to run py_bootstrap.sh every time?</h4>
-                <p><strong>A:</strong> No! Just once per project. After that, just use <code class="command">./Run.sh</code> to execute your code.</p>
-            </div>
-            
-            <div class="card">
-                <h4>Q: What if my venv gets corrupted?</h4>
-                <p><strong>A:</strong> Just delete the <code>.venv</code> folder and run <code class="command">./py_bootstrap.sh</code> again. It's that simple.</p>
-            </div>
-            
-            <div class="card">
-                <h4>Q: Can I use this with Docker?</h4>
-                <p><strong>A:</strong> Definitely! Use PyBootstrap to set up locally, then commit your <code>.venv</code> or convert to a Dockerfile. Or use the scripts inside Docker.</p>
-            </div>
-        </section>
-        
-        <section>
-            <h2>Next Steps</h2>
-            
-            <div class="card-grid">
-                <div class="card">
-                    <h4>📖 Read the README</h4>
-                    <p>Check out the full documentation in README.md</p>
-                </div>
-                
-                <div class="card">
-                    <h4>💻 Try It Now</h4>
-                    <p>Run <code class="command">pybs init --dir test-project</code> and see for yourself!</p>
-                </div>
-                
-                <div class="card">
-                    <h4>⭐ Star the Repo</h4>
-                    <p>Show your support on GitHub!</p>
-                </div>
-                
-                <div class="card">
-                    <h4>🐛 Report Issues</h4>
-                    <p>Help improve PyBootstrap by reporting bugs.</p>
-                </div>
-            </div>
-            
-            <section id="roadmap" style="margin-top: 3rem;">
-                <h2>🚀 Coming Soon</h2>
-                
-                <div class="card" style="border-left: 4px solid #9c27b0; background: linear-gradient(135deg, #f3e5f5, #ede7f6);">
-                    <h3 style="color: #7b1fa2; margin-top: 0;">Enhanced Dependency Management</h3>
-                    <p>Future versions will support more robust dependency management options:</p>
-                    
-                    <div class="card-grid" style="margin-top: 1rem;">
-                        <div class="card" style="background: white;">
-                            <h4 style="margin-top: 0;">📦 Poetry</h4>
-                            <p>Modern Python packaging with lockfiles. Great for projects you plan to publish to PyPI.</p>
-                        </div>
-                        
-                        <div class="card" style="background: white;">
-                            <h4 style="margin-top: 0;">🔒 pip-tools</h4>
-                            <p>Pinned, reproducible builds with <code>pip-compile</code>. Perfect for production.</p>
-                        </div>
-                        
-                        <div class="card" style="background: white;">
-                            <h4 style="margin-top: 0;">🐍 Pipenv</h4>
-                            <p>Combines pip and virtualenv. Industry-standard with Pipfile.lock support.</p>
-                        </div>
-                    </div>
-                    
-                    <p style="margin-bottom: 0;"><em>Current version uses pip + pipreqs for the fastest setup. Choose the tool that fits your needs!</em></p>
-                </div>
-            </section>
-        </section>
-    </main>
-    
-    <footer>
-        <p>PyBootstrap - Making Python setup painless</p>
-        <p><small>MIT License - Built with ❤️ by PlayWitIt</small></p>
-    </footer>
-    
-    <script>
-        // Tab functionality
-        function showTab(tabId) {
-            // Hide all tab contents
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
-            
-            // Remove active class from all tabs
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            // Show selected tab
-            document.getElementById(tabId).classList.add('active');
-            
-            // Add active class to clicked tab
-            event.target.classList.add('active');
-        }
-        
-        // Environment detection demo
-        function detectEnvironment() {
-            const output = document.getElementById('env-output');
-            output.innerHTML = 'Detecting...';
-            
-            // Simulate detection (in real implementation, this would actually check)
-            setTimeout(() => {
-                const results = [];
-                
-                // Check Python
-                results.push('🐍 Python: Detected system Python');
-                
-                // Check for venv
-                results.push('📦 Virtual Environment: .venv/ would be created');
-                
-                // Check for requirements
-                results.push('📋 Dependencies: Would check requirements.txt');
-                
-                // Check Git
-                if (typeof git !== 'undefined') {
-                    results.push('📂 Git: Would offer to initialize');
-                }
-                
-                output.innerHTML = results.join('<br>');
-                output.style.animation = 'fadeIn 0.5s ease';
-            }, 500);
-        }
-        
-        // Smooth scrolling for navigation
-        document.querySelectorAll('nav a').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-        
-        // Highlight current section in nav
-        const sections = document.querySelectorAll('section');
-        const navLinks = document.querySelectorAll('nav a');
-        
-        window.addEventListener('scroll', () => {
-            let current = '';
-            
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-                if (scrollY >= sectionTop - 150) {
-                    current = section.getAttribute('id');
-                }
-            });
-            
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === '#' + current) {
-                    link.classList.add('active');
-                }
-            });
-        });
-        
-        // Add animation on scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('fade-in');
-                }
-            });
-        }, observerOptions);
-        
-        document.querySelectorAll('.card, section').forEach(el => {
-            observer.observe(el);
-        });
-    </script>
+# Run scripts directly
+pybs exec myscript.py</code></pre>
+
+    <h2>Commands</h2>
+    <ul>
+        <li><code>pybs init</code> - Creates py_bootstrap.sh + Run.sh</li>
+        <li><code>pybs bootstrap</code> - Creates only py_bootstrap.sh</li>
+        <li><code>pybs run</code> - Creates only Run.sh</li>
+        <li><code>pybs exec script.py</code> - Run a script directly</li>
+    </ul>
+
+    <h2>Options</h2>
+    <ul>
+        <li><code>--dir name</code> - Create in a new directory</li>
+        <li><code>--force</code> - Overwrite existing files</li>
+        <li><code>--no-venv</code> - Use system Python (with exec)</li>
+    </ul>
+
+    <h2>How it works</h2>
+    <ol>
+        <li>Run <code>pybs init</code> to create the scripts</li>
+        <li>Run <code>./py_bootstrap.sh</code> once to set up your environment</li>
+        <li>Run <code>./Run.sh</code> (or <code>pybs exec</code>) to run your code</li>
+    </ol>
+
+    <h2>What py_bootstrap.sh does</h2>
+    <ul>
+        <li>Detects Python (pyenv, conda, or system)</li>
+        <li>Creates virtual environment</li>
+        <li>Installs dependencies from requirements.txt</li>
+        <li>Offers to set up Git</li>
+    </ul>
+
+    <h2>What Run.sh does</h2>
+    <ul>
+        <li>Finds your virtual environment</li>
+        <li>Activates it</li>
+        <li>Runs your Python script (auto-detects main.py, app.py, etc)</li>
+    </ul>
+
+    <h2>Example</h2>
+    <pre><code>mkdir myproject
+cd myproject
+pip install PythonBootstraper
+pybs init
+echo 'print("Hello!")' > main.py
+./py_bootstrap.sh
+./Run.sh</code></pre>
+
+    <hr>
+    <p><small>Get the source at <a href="https://github.com/PlayWitIt/Python-Bootstrap">github.com/PlayWitIt/Python-Bootstrap</a></small></p>
 </body>
 </html>
