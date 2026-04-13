@@ -82,7 +82,15 @@ def copy_script(source_file: Path, dest_file: Path, force: bool = False) -> bool
 @click.group()
 @click.version_option(version=__version__, prog_name="pybs")
 def cli():
-    """pybootstrap: A tool to initialize a Python project with helper scripts."""
+    """pybootstrap: A tool to initialize a Python project with helper scripts.
+    
+    Quick Start:
+        pybs init                    # Create Run.sh + py_bootstrap.sh
+        pybs exec myscript.py        # Run a script directly
+        pybs --help                 # Show all commands
+    
+    Full Guide: https://github.com/PlayWitIt/Python-Bootstrap
+    """
     pass
 
 
@@ -91,7 +99,17 @@ def cli():
               help="Create and initialize in a new directory. Defaults to the current directory.")
 @click.option('--force', '-f', is_flag=True, help="Overwrite existing scripts without prompting.")
 def init(directory, force):
-    """Initialize a project with both py_bootstrap.sh and Run.sh."""
+    """Initialize a project with both py_bootstrap.sh and Run.sh.
+    
+    Creates helper scripts in the target directory:
+    - py_bootstrap.sh: Sets up virtual environment and installs deps
+    - Run.sh: Runs your Python scripts with the correct venv
+    
+    Examples:
+        pybs init                          # Current directory
+        pybs init --dir myproject          # New directory
+        pybs init --force                  # Overwrite existing scripts
+    """
     
     target_path = Path.cwd()
     if directory:
@@ -132,7 +150,19 @@ def init(directory, force):
               help="Create and initialize in a new directory. Defaults to the current directory.")
 @click.option('--force', '-f', is_flag=True, help="Overwrite existing scripts without prompting.")
 def bootstrap(directory, force):
-    """Create only the py_bootstrap.sh script (for environment setup)."""
+    """Create only the py_bootstrap.sh script (for environment setup).
+    
+    Creates py_bootstrap.sh which:
+    - Detects Python (pyenv, conda, or system)
+    - Creates/updates virtual environment
+    - Installs dependencies from requirements.txt
+    - Optionally initializes Git
+    
+    Examples:
+        pybs bootstrap                     # Current directory
+        pybs bootstrap --dir myproject     # New directory
+        pybs bootstrap --force             # Overwrite existing
+    """
     
     target_path = Path.cwd()
     if directory:
@@ -171,7 +201,19 @@ def bootstrap(directory, force):
               help="Create and initialize in a new directory. Defaults to the current directory.")
 @click.option('--force', '-f', is_flag=True, help="Overwrite existing scripts without prompting.")
 def run(directory, force):
-    """Create only the Run.sh script (for running Python scripts)."""
+    """Create only the Run.sh script (for running Python scripts).
+    
+    Creates Run.sh which:
+    - Finds and activates your virtual environment
+    - Auto-detects your main script (main.py, app.py, myapp.py)
+    - Shows a menu if no default script found
+    - Scans all subdirectories for Python scripts
+    
+    Examples:
+        pybs run                           # Current directory
+        pybs run --dir myproject          # New directory
+        pybs run --force                  # Overwrite existing
+    """
     
     target_path = Path.cwd()
     if directory:
@@ -211,7 +253,14 @@ def run(directory, force):
 def exec(script, args, no_venv):
     """Run a Python script directly without needing Run.sh.
     
-    Example: pybs exec myscript.py --arg1 value
+    Finds your virtual environment automatically and runs the script.
+    Passes all arguments after the script to your Python script.
+    
+    Examples:
+        pybs exec myscript.py                    # Run a specific script
+        pybs exec myscript.py -- --arg1 value    # Pass args to script
+        pybs exec --no-venv myscript.py           # Use system Python
+        pybs exec                                # Run main.py or app.py
     """
     target_path = Path.cwd()
     
