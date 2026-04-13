@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.2] - 2026-04-13
+
+### Added
+- `pybs init` - Initialize with both scripts (existing behavior)
+- `pybs bootstrap` - Create only py_bootstrap.sh
+- `pybs run` - Create only Run.sh
+
+### Changed
+- Updated Run.sh with colored output (INFO, SUCCESS, ERROR, section headers)
+- Updated py_bootstrap.sh with colored output matching Run.sh
+- Both scripts now have Ctrl+C interrupt handling
+- Removed debug code from templates
+- py_bootstrap.sh now supports double-click auto-launch
+
 ## [1.1.0] - 2026-04-13
 
 ### Added

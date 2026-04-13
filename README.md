@@ -122,7 +122,7 @@ pip install PythonBootstraper
 
 ## Usage
 
-### Initialize a new project
+### Initialize a new project (both scripts)
 
 ```bash
 # In a new directory
@@ -130,6 +130,26 @@ pybs init --dir my_project
 
 # Or in current directory
 pybs init
+```
+
+### Create only the bootstrap script
+
+```bash
+# Just py_bootstrap.sh (for environment setup)
+pybs bootstrap
+
+# Or in a new directory
+pybs bootstrap --dir my_project
+```
+
+### Create only the run script
+
+```bash
+# Just Run.sh (for running code)
+pybs run
+
+# Or in a new directory
+pybs run --dir my_project
 ```
 
 ### Set up the environment
@@ -175,13 +195,32 @@ No activation commands. No path hunting. Just code.
 
 ## Options
 
-### pybs init
+### pybs init (both scripts)
 
 ```bash
 pybs init                    # Current directory
 pybs init --dir my_project   # New directory
-pybs init --no-run          # Skip Run.sh generation
+```
+
+### pybs bootstrap (only py_bootstrap.sh)
+
+```bash
+pybs bootstrap                    # Current directory
+pybs bootstrap --dir my_project   # New directory
+```
+
+### pybs run (only Run.sh)
+
+```bash
+pybs run                    # Current directory
+pybs run --dir my_project   # New directory
+```
+
+### Other
+
+```bash
 pybs --version             # Show version
+pybs --help                # Show help
 ```
 
 ## Requirements
