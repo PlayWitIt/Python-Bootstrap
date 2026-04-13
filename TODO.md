@@ -17,6 +17,11 @@
   - Missing dependencies
   - Permission issues
 
+## Not Planned
+
+### Enhanced Dependency Management (Poetry/Pipenv/pip-tools)
+**Decision:** Not practical for this tool. PyBootstrap's purpose is quick setup, not enterprise dependency management. Users who need Poetry/Pipenv should use those tools directly.
+
 ## Completed Features (v1.2.0)
 
 - [x] `pybs exec <script.py>` - Run scripts directly
